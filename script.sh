@@ -1,7 +1,19 @@
 #!/bin/bash
-gosu root chown dst:dst /home/dst/.klei/DoNotStarveTogether/example/
 PA="/home/dst/.klei/DoNotStarveTogether/example"
+mkdir -p /home/dst/.klei/DoNotStarveTogether/example/
+gosu root chown -R dst:dst /home/dst/.klei/DoNotStarveTogether/example/
+
+if [ ! -z "$SAVE_URL" ]; then
+echo 1
+wget -O $PA/example.zip $SAVE_URL
+unzip $PA/example.zip -d $PA 
+echo downloaded save
+rm $PA/example.zip
+else
+echo 2
 cp -n -r  /home/dst/.klei/DoNotStarveTogether/example1/* /home/dst/.klei/DoNotStarveTogether/example/
+fi
+
 
 if [ -z "$MAX_PLAYER" ]; then
 MAX_PLAYER=6
@@ -70,16 +82,20 @@ if [ ! -f $PA/Master/modoverrides.lua  ]; then
 MODOVER="$PA/Master/modoverrides.lua"
 MODOVER_Caves="$PA/Caves/modoverrides.lua"
 echo -e "return {" > $MODOVER
+echo -e "return {" > $MODOVER_Caves
 IFS=',' read -ra all_mods <<< "${MODS}"
 for mod in "${all_mods[@]}"; do
   echo -e "[\"workshop-${mod}\"]={enabled=true}," >> $MODOVER
   echo -e "[\"workshop-${mod}\"]={enabled=true}," >> $MODOVER_Caves
-  echo -e "ServerModSetup(\"${mod}\")"   >> ./dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
+  echo -e "ServerModSetup(\"${mod}\")"   >> /home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
   echo  "Mod ${mod} is enable"
 done
 echo -e "}" >> $MODOVER
+echo -e "}" >> $MODOVER_Caves
 fi
 fi
+
+#
 
 cd /home/dst/dontstarvetogether_dedicated_server/bin64
 echo "running server . . ."
