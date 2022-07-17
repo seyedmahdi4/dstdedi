@@ -13,7 +13,8 @@ Launch a steam client on a system with GUI, install Don't Starve Together, log i
 
 
 ###### All environmental variables and default value:
-```CLUSTER_TOKEN -> none - it is require
+```
+CLUSTER_TOKEN -> none - it is require
 CLUSTER_NAME -> dstdedi -- test
 MAX_PLAYER  -> 6
 CLUSTER_DESCRIPTION -> Powered by Docker - seyedmahdi3/dstdedi
@@ -22,4 +23,6 @@ STYLE -> cooperative
 PVP -> false
 AUTOPAUSE -> true
 ADMIN_IDS -> none
-MODS -> none```
+MODS -> none
+SAVE_URL -> it is zip wolrd's url
+```
