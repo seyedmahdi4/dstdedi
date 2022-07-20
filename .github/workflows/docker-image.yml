@@ -3,7 +3,7 @@ name: build, test, push
 on:
   push:
     branches:
-      - 'main'
+      - 'test1'
 
 env:
   TEST_TAG: seyedmahdi3/dstdedi:test
