@@ -9,6 +9,10 @@ function fail()
 	exit 1
 }
 
+if [  "$CHECK_UPDATE" = true ]; then
+  /home/dst/steamcmd/steamcmd.sh +force_install_dir "/home/dst/dontstarvetogether_dedicated_server" +login anonymous +app_update 343050 +quit
+fi
+
 if [ ! -z "$SAVE_URL" ]; then
 wget -O $PA/example.zip $SAVE_URL || fail "downalod world faild!"
 unzip $PA/example.zip -d $PA  || fail "this world file not zip !"
