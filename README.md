@@ -3,7 +3,11 @@ A docker image for running DST servers.
 ## How To Run
 
 #### Using `docker run`:
-- run container: ```docker run --name dst -it -d -e "CLUSTER_TOKEN=****" -e "CLUSTER_NAME=test server" -e MAX_PLAYER=10 -e MODS=1185229307,378160973 -v /path/to/dst-data/:/home/dst/.klei/DoNotStarveTogether/world/ dstdedi```
+- run container:
+```
+docker run --name dst -it -d -e "CLUSTER_TOKEN=****" -e "CLUSTER_NAME=test server" -e MAX_PLAYER=10\
+-e MODS=1185229307,378160973 -v /path/to/dst-data/:/home/dst/.klei/DoNotStarveTogether/world/ dstdedi
+```
 - stopping container: ```docker stop dst```
 - starting container after stopping: ```docker start dst```
 - deleting container: ```docker rm -f dst```
