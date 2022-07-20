@@ -40,6 +40,11 @@ NOTE: Use c_save() console command before shutting the server down, or else you 
 
 NOTE: For updating mods, restart the server by running `docker restart dst`.
 
+
+## Updating The Game
+By setting `CHECK_UPDATE` to `true`, server will check for game updates and automatically download it after each container start/restart. If this option is set to true, simply restart the container by running `docker restart dst` to update the game. If `CHECK_UPDATE` is set to `false`, run `docker rm -f` and then run the container again with `CHECK_UPDATE` set to `true`.
+
+
 ## Running An Existing World
 1- With url: If you want to run an existing world, you need to provide `SAVE_URL` with a direct link to your world's .zip file. Example of .zip file:
 ```
@@ -122,6 +127,7 @@ DEBUG               -> Show all serevr logs. (default: false)
 ADMIN_IDS           -> List of players' KU IDs (default: NONE)
 MODS                -> List of steam workshop IDs to be installed (default: NONE)
 SAVE_URL            -> A direct link to your world's save file (default: NONE)
+CHECK_UPDATE        -> whether to check for game updates after starting the container or not (default: true)
 ```
 
 Note: if you want more than 1 admin or 1 mod, separate each ID with a comma; For example: MODS=123456789,456789123,891234567
