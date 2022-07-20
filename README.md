@@ -38,7 +38,7 @@ NOTE: Use `-v` if you want the world saves to persist.
 ([Full list of environmental variables](#all-environmental-variables-and-their-default-values))
 
 ## Running An Existing World
-If you want to run an existing world, you need to provide `SAVE_URL` with a direct link to your world's .zip file. Example of .zip file:
+1- With url: If you want to run an existing world, you need to provide `SAVE_URL` with a direct link to your world's .zip file. Example of .zip file:
 ```
 .
 └── my_world.zip
@@ -50,7 +50,15 @@ If you want to run an existing world, you need to provide `SAVE_URL` with a dire
         └── ...
 
 ```
-If you have your world folder on the server, you can supply its location to `-v` like: `docker run --name dst -it -d -e "CLUSTER_TOKEN=****" -v /path/to/your_cluster/:/home/dst/.klei/DoNotStarveTogether/world/ dstdedi`. Or set `volumes` to its location in `docker-compose.yml` like:
+and run it with this:
+```
+docker run --name dst  -it -d  -e "CLUSTER_TOKEN=**" -e "SAVE_URL=https://example.com/world.zip"  seyedmahdi3/dstdedi:0.2
+```
+2- with your world folder: If you have your world folder on the server, you can supply its location to `-v` like: 
+```
+docker run --name dst -it -d -e "CLUSTER_TOKEN=****" -v /path/to/your_cluster/:/home/dst/.klei/DoNotStarveTogether/world/ dstdedi
+```
+Or set `volumes` to its location in `docker-compose.yml` like:
 ```yml
 #...
   #...
@@ -85,7 +93,11 @@ In order to run console commands from dedicated server as host(e.g. making annou
 
 
 ## Port Forwarding
-By default, you can search servers in game and connect to it; This will make the connection go through steamapi. However, by using c_connect("ip/address", port) console command in-game, you can connect directly to the server, which reduces lag. In order to be able to connect directly, you need to set the ports. If you are running the container by `docker run`, use `-p` option; For example: `docker run --name dst -it -d -e "CLUSTER_TOKEN=****" -p 11000:11000 seyedmahdi3/dstdedi:0.2`. You can set the ports option in `docker-compose.yml` aswell ([here](#docker-compose-file-structure-survival)).
+By default, you can search servers in game and connect to it; This will make the connection go through steamapi. However, by using c_connect("ip/address", port) console command in-game, you can connect directly to the server, which reduces lag. In order to be able to connect directly, you need to set the ports. If you are running the container by `docker run`, use `-p` option; For example: 
+```
+docker run --name dst -it -d -e "CLUSTER_TOKEN=****" -p 11000:11000 seyedmahdi3/dstdedi:0.2
+```
+You can set the ports option in `docker-compose.yml` aswell.
 
 
 ## All Environmental Variables and Their Default Values
@@ -110,7 +122,7 @@ SAVE_URL            -> A direct link to your world's save file (default: NONE)
 ```
 
 Note: if you want more than 1 admin or 1 mod, separate each ID with a comma; For example: MODS=123456789,456789123,891234567
-
+the IDs exist in steamcommunity.com/sharedfiles/filedetails/?id= ```1185229307``` . this is for Epic Healthbar mod.
 
 ## Instructions on Obtaining Server Token
 Launch a steam client on a system with GUI, install Don't Starve Together, log in, press ~ button then type TheNet:GenerateClusterToken() then press enter. You'll find a cluster_token.txt under your client config directory.
