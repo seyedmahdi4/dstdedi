@@ -1,0 +1,14 @@
+Scroll Config:
+File names should be "reforged_server_event.txt" and "reforged_server_info.txt". NOTE. Remove TODO if using the template and it should be correct.
+The first line of the text file is the title for the scroll.
+The scrolls support 3 types of links: steam workshop, youtube channel, and discord invites. To set a link you state the type and the id. You DO NOT give the full link.
+EX:
+steam:workshop_id
+discord:invite_link_id
+youtube:channel_name
+
+Example text file contents:
+ReForged Server
+This is my ReForged server.
+Here is a link to my mod: steam:1938752683
+Check out my youtube channel youtube:my_channel and join my discord discord:xkpsE8c

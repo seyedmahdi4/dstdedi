@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  dst:
+    image: seyedmahdi3/dstdedi:0.2
+    ports: # optional
+      - 11000:11000
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./dst-data:/home/dst/.klei/DoNotStarveTogether/world/
+    environment:
+      CLUSTER_TOKEN: "****"
+      CLUSTER_NAME: "dstdedi -- test"
+
