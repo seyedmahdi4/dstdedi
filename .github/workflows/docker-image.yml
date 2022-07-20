@@ -37,7 +37,7 @@ jobs:
       -
         name: Test
         run: |
-          docker run --rm -it -e CLUSTER_TOKEN="$CLUSTER_TOKEN" -e TEST__=true  ${{ env.TEST_TAG }}
+          docker run --rm -i -e CLUSTER_TOKEN="$CLUSTER_TOKEN" -e TEST__=true  ${{ env.TEST_TAG }}
       -
         name: Build and push
         uses: docker/build-push-action@v3
