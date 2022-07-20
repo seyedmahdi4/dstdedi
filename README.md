@@ -40,7 +40,12 @@ NOTE: Use c_save() console command before shutting the server down, or else you 
 
 NOTE: For updating mods, restart the server by running `docker restart dst`.
 
-
+## Add mods
+fist get IDs from the steam workshop .for example steamcommunity.com/sharedfiles/filedetails/?id=1185229307 this is Epic Healthbar mod and mod's ID is `1185229307`. and use it in MODS env as an example:
+`-e MODS=1185229307,378160973`
+```
+docker run --name dst -it -d -e "CLUSTER_TOKEN=****" -e MODS=1185229307,378160973 seyedmahdi3/dstdedi:0.2
+```
 ## Updating The Game
 By setting `CHECK_UPDATE` to `true`, server will check for game updates and automatically download it after each container start/restart. If this option is set to true, simply restart the container by running `docker restart dst` to update the game. If `CHECK_UPDATE` is set to `false`, run `docker rm -f` and then run the container again with `CHECK_UPDATE` set to `true`.
 
@@ -76,6 +81,11 @@ Or set `volumes` to its location in `docker-compose.yml` like:
 
 ## Running ReForged
 You can run a ReForged modded world by setting `REFORGED` env variable to `true`. You can also enable ReForged extension mods, PugnaX and Hallowed by setting `PUGNAX` and `HALLOWED` to `true`.
+
+docker run example:
+```
+docker run --name dst -it -d -e "CLUSTER_TOKEN=****" -e REFORGED=true  seyedmahdi3/dstdedi:0.2
+```
 
 docker-compose.yml example:
 ```yml
@@ -131,7 +141,7 @@ CHECK_UPDATE        -> whether to check for game updates after starting the cont
 ```
 
 Note: if you want more than 1 admin or 1 mod, separate each ID with a comma; For example: MODS=123456789,456789123,891234567
-the IDs exist in steamcommunity.com/sharedfiles/filedetails/?id= ```1185229307``` . this is for Epic Healthbar mod.
+
 
 ## Instructions on Obtaining Server Token
 Launch a steam client on a system with GUI, install Don't Starve Together, log in, press ~ button then type TheNet:GenerateClusterToken() then press enter. You'll find a cluster_token.txt under your client config directory.
