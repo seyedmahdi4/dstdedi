@@ -34,8 +34,11 @@ services:
       # ...
 ```
 
-NOTE: Use `-v` if you want the world saves to persist.
-([Full list of environmental variables](#all-environmental-variables-and-their-default-values))
+NOTE: Use `-v` if you want the world saves to persist.([Full list of environmental variables](#all-environmental-variables-and-their-default-values))
+
+NOTE: Use c_save() console command before shutting the server down, or else you will lose world progress made after the last save (by default game saves at the start of the day).
+
+NOTE: For updating mods, restart the server by running `docker restart dst`.
 
 ## Running An Existing World
 1- With url: If you want to run an existing world, you need to provide `SAVE_URL` with a direct link to your world's .zip file. Example of .zip file:
