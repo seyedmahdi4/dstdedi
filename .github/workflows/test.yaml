@@ -1,4 +1,4 @@
-name: build, test, push
+name: just test
 
 on:
   push:
@@ -18,4 +18,4 @@ jobs:
       -
         name: Test
         run: |
-          docker run --rm -i -e CLUSTER_TOKEN="$CLUSTER_TOKEN" -e TEST__=true  seyedmahdi3/dstdedi:0.2
+          docker run --rm -i -e CLUSTER_TOKEN=${{ secrets.CLUSTER_TOKEN }} -e TEST__=true  seyedmahdi3/dstdedi:0.2
