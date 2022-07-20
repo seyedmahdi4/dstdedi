@@ -16,14 +16,14 @@ echo downloaded world successful
 rm $PA/example.zip
 else
 
-if [ "$REFORGED" = TRUE ]; then
+if [ "$REFORGED" = true ]; then
 cp -n -r  /home/dst/.klei/DoNotStarveTogether/Reforged/* $PA
 MODS="${MODS},1938752683"
-if [ "$PUGNAX" = TRUE ]; then
+if [ "$PUGNAX" = true ]; then
 MODS="${MODS},2038128735" 
 echo "pugnax ON"
 fi
-if [ "$HALLOWED" = TRUE  ]; then
+if [ "$HALLOWED" = true  ]; then
 MODS="${MODS},2633870801" 
 fi
 echo mods update to $MODS
@@ -55,13 +55,15 @@ echo ERROR 404! CLUSTER_TOKEN not found
 exit 1
 fi
 
+
 if [ -z "$GAMEMODE" ]; then
-if [ "$REFORGED" = TRUE ]; then
+GAMEMODE="survival"
+fi
+
+if [ "$REFORGED" = true ]; then
 GAMEMODE="lavaarena"
-else
-GAMEMODE="endless"
 fi
-fi
+
 echo "gamemode set to: $GAMEMODE"
 
 if [ -z "$STYLE" ]; then
@@ -103,20 +105,20 @@ if [ ! -z "$MODS" ]; then
 MODOVER="$PA/Master/modoverrides.lua"
 MODOVER_Caves="$PA/Caves/modoverrides.lua"
 echo -e "return {" > $MODOVER
-if [ ! "$REFORGED" = TRUE ]; then
+if [ ! "$REFORGED" = true ]; then
 echo -e "return {" > $MODOVER_Caves
 fi
 IFS=',' read -ra all_mods <<< "${MODS}"
 for mod in "${all_mods[@]}"; do
   echo -e "[\"workshop-${mod}\"]={enabled=true}," >> $MODOVER
-if [ ! "$REFORGED" = TRUE ]; then
+if [ ! "$REFORGED" = true ]; then
   echo -e "[\"workshop-${mod}\"]={enabled=true}," >> $MODOVER_Caves
 fi
   echo -e "ServerModSetup(\"${mod}\")"   >> /home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
   echo  "Mod ${mod} is enable"
 done
 echo -e "}" >> $MODOVER
-if [ ! "$REFORGED" = TRUE ]; then
+if [ ! "$REFORGED" = true ]; then
 echo -e "}" >> $MODOVER_Caves
 fi
 fi
@@ -124,9 +126,9 @@ fi
 
 
 cd /home/dst/dontstarvetogether_dedicated_server/bin64
-if [ ! "$DEBUG" = TRUE ]; then
+if [ ! "$DEBUG" = true ]; then
 
-if [ "$REFORGED" = TRUE ]; then
+if [ "$REFORGED" = true ]; then
 echo "running Reforged server . . ."
 ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master |grep 'Server registered\|is now ready!'
 else
@@ -137,7 +139,7 @@ fi
 
 else
 
-if [ "$REFORGED" = TRUE ]; then
+if [ "$REFORGED" = true ]; then
 echo "running Reforged server . . ."
 ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master
 else
