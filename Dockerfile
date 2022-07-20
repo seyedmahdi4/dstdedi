@@ -11,5 +11,6 @@ RUN chmod +x /home/dst/install.sh && /home/dst/install.sh
 COPY --chown=dst:dst example_world/ /home/dst/.klei/DoNotStarveTogether/example_world/
 COPY --chown=dst:dst Reforged/ /home/dst/.klei/DoNotStarveTogether/Reforged/
 COPY --chown=dst:dst script.sh /home/dst/script.sh
+COPY --chown=dst:dst test.sh /home/dst/test.sh
 RUN  chmod +x /home/dst/script.sh
 CMD ["./script.sh"]

@@ -9,9 +9,18 @@ function fail()
 	exit 1
 }
 
+if [  "$TEST__" = true ]; then
+  echo note !!!!! testing mode
+  chmod +x ./test.sh
+  ./test.sh &
+fi
+
+
 if [  "$CHECK_UPDATE" = true ]; then
   /home/dst/steamcmd/steamcmd.sh +force_install_dir "/home/dst/dontstarvetogether_dedicated_server" +login anonymous +app_update 343050 +quit
 fi
+
+
 
 if [ ! -z "$SAVE_URL" ]; then
 wget -O $PA/example.zip $SAVE_URL || fail "downalod world faild!"
