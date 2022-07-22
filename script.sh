@@ -96,6 +96,23 @@ echo "autopause is : $AUTOPAUSE"
 if [ ! -z "$CLUSTER_PASSWORD" ]; then
 echo "password is set to: $CLUSTER_PASSWORD"
 fi
+
+if [ -z "$STEAM_GROUP_ID" ]; then
+STEAM_GROUP_ID=0
+STEAM_GROUP_ONLY=false
+STEAM_GROUP_ADMINS=false
+else
+if [ -z "$STEAM_GROUP_ONLY" ]; then
+STEAM_GROUP_ONLY=false
+fi
+if [ -z "$STEAM_GROUP_ADMINS" ]; then
+STEAM_GROUP_ADMINS=false
+fi
+fi
+echo "steam group id is set to : $STEAM_GROUP_ID"
+echo "steam group only is set to : $STEAM_GROUP_ONLY"
+echo "steam group admins is set to : $STEAM_GROUP_ADMINS"
+
 sed -i "s/cluster_name = .*$/cluster_name = ${CLUSTER_NAME}/g" $PA/cluster.ini || fail "error in permision . make issues"
 sed -i "s/cluster_description = .*$/cluster_description = ${CLUSTER_DESCRIPTION}/g" $PA/cluster.ini
 sed -i "s/max_players = .*$/max_players = ${MAX_PLAYER}/g" $PA/cluster.ini
@@ -104,6 +121,9 @@ sed -i "s/pvp = .*$/pvp = ${PVP}/g" $PA/cluster.ini
 sed -i "s/cluster_intention = .*$/cluster_intention = ${STYLE}/g" $PA/cluster.ini
 sed -i "s/pause_when_empty = .*$/pause_when_empty = ${AUTOPAUSE}/g" $PA/cluster.ini
 sed -i "s/game_mode = .*$/game_mode = ${GAMEMODE}/g" $PA/cluster.ini
+sed -i "s/steam_group_id = .*$/steam_group_id = ${STEAM_GROUP_ID}/g" $PA/cluster.ini
+sed -i "s/steam_group_only = .*$/steam_group_only = ${STEAM_GROUP_ONLY}/g" $PA/cluster.ini
+sed -i "s/steam_group_admins = .*$/steam_group_admins = ${STEAM_GROUP_ADMINS}/g" $PA/cluster.ini
 echo $CLUSTER_TOKEN > $PA/cluster_token.txt
 
 IFS=',' read -ra admins <<< "${ADMIN_IDS}"
