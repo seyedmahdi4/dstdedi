@@ -97,7 +97,7 @@ if [ ! -z "$CLUSTER_PASSWORD" ]; then
 echo "password is set to: $CLUSTER_PASSWORD"
 fi
 if [ ! -f "$PA/cluster.ini" ]; then
-cp -n -r  /home/dst/.klei/DoNotStarveTogether/Reforged/cluster.ini $PA>
+cp  /home/dst/.klei/DoNotStarveTogether/example_world/cluster.ini $PA/cluster.ini
 fi
 sed -i "s/cluster_name = .*$/cluster_name = ${CLUSTER_NAME}/g" $PA/cluster.ini || fail "error in permision . make issues"
 sed -i "s/cluster_description = .*$/cluster_description = ${CLUSTER_DESCRIPTION}/g" $PA/cluster.ini
