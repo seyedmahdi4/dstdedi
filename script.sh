@@ -113,6 +113,10 @@ echo "steam group id is set to : $STEAM_GROUP_ID"
 echo "steam group only is set to : $STEAM_GROUP_ONLY"
 echo "steam group admins is set to : $STEAM_GROUP_ADMINS"
 
+if [ ! -f "$PA/cluster.ini" ]; then
+cp  /home/dst/.klei/DoNotStarveTogether/example_world/cluster.ini $PA/cluster.ini
+fi
+
 sed -i "s/cluster_name = .*$/cluster_name = ${CLUSTER_NAME}/g" $PA/cluster.ini || fail "error in permision . make issues"
 sed -i "s/cluster_description = .*$/cluster_description = ${CLUSTER_DESCRIPTION}/g" $PA/cluster.ini
 sed -i "s/max_players = .*$/max_players = ${MAX_PLAYER}/g" $PA/cluster.ini
