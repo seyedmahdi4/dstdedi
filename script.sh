@@ -114,10 +114,10 @@ fi
 if [ -z "$STEAM_GROUP_ADMINS" ]; then
 STEAM_GROUP_ADMINS=false
 fi
-fi
 echo "Steam group id is set to : $STEAM_GROUP_ID"
 echo "Steam group only is set to : $STEAM_GROUP_ONLY"
 echo "Steam group admins is set to : $STEAM_GROUP_ADMINS"
+fi
 
 if [ ! -f "$PA/cluster.ini" ]; then
 cp  /home/dst/.klei/DoNotStarveTogether/example_world/cluster.ini $PA/cluster.ini
