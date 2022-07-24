@@ -138,6 +138,9 @@ ADMIN_IDS           -> List of players' KU IDs (default: NONE)
 MODS                -> List of steam workshop IDs to be installed (default: NONE)
 SAVE_URL            -> A direct link to your world's save file (default: NONE)
 CHECK_UPDATE        -> whether to check for game updates after starting the container or not (default: true)
+STEAM_GROUP_ID      -> Your steam group ID so that players in the group can join the server easily (default: 0)
+STEAM_GROUP_ONLY    -> Allow only steam group member to join the server (default: false)
+STEAM_GROUP_ADMINS  -> Admins of the steam group also becomes admins of the server (default: false)
 ```
 
 Note: if you want more than 1 admin or 1 mod, separate each ID with a comma; For example: MODS=123456789,456789123,891234567
