@@ -13,5 +13,6 @@ COPY --chown=dst:dst Reforged/ /home/dst/.klei/DoNotStarveTogether/Reforged/
 COPY --chown=dst:dst script.sh /home/dst/script.sh
 COPY --chown=dst:dst run.sh /home/dst/run.sh
 COPY --chown=dst:dst test.sh /home/dst/test.sh
+COPY --chown=dst:dst tools/* /usr/local/bin/
 RUN  chmod +x /home/dst/script.sh && chmod +x /home/dst/run.sh
 CMD ["./run.sh"]
