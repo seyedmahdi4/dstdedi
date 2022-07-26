@@ -1,0 +1,19 @@
+#!/bin/bash
+
+function command_m() {
+    screen -S dst  -p 0 -X stuff "$1^M"
+}
+
+
+
+function stop_server() {
+    command_m 'c_announce("The server will shut down in the next 10 seconds!")'
+    sleep "10s"
+    command_m 'c_shutdown()'
+
+    # The server gets 5 seconds to shutdown normally #
+    sleep "5"
+    kill kill -INT -1
+}
+
+stop_server

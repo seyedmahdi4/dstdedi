@@ -1,0 +1,10 @@
+#!/bin/bash
+
+arg=$*
+
+function command_m() {
+    screen -S dst  -p 0 -X stuff "$1^M"
+}
+
+
+command_m "$arg"
