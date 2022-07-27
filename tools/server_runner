@@ -11,8 +11,7 @@ function fail()
 
 if [  "$TEST__" = true ]; then
   echo note !!!!! testing mode
-  chmod +x ./test.sh
-  ./test.sh &
+  docker_test &
 fi
 
 
@@ -196,7 +195,7 @@ echo
 if [ "$REFORGED" = true ] || [ "$CAVE" = false ]  ; then
 ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master
 else
-./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master & \
-./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Caves
+./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Caves  &  \
+./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master
 fi
 fi
