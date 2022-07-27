@@ -35,7 +35,7 @@ rm $PA/example.zip
 else
 
 if [ "$REFORGED" = true ]; then
-cp -n -r  /home/dst/.klei/DoNotStarveTogether/Reforged/* $PA
+cp -n -r  /home/dst/.klei/DoNotStarveTogether/example_Reforged/* $PA
 MODS="${MODS},1938752683"
 if [ "$PUGNAX" = true ]; then
 MODS="${MODS},2038128735" 
