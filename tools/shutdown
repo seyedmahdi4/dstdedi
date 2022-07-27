@@ -8,7 +8,9 @@ function command_m() {
 
 function stop_server() {
     command_m 'c_announce("The server will shut down in the next 10 seconds!")'
-    sleep "10s"
+    sleep 3
+    command_m 'c_save()'
+    sleep 6
     command_m 'c_shutdown()'
 
     # The server gets 5 seconds to shutdown normally #
