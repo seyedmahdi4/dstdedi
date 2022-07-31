@@ -15,7 +15,7 @@ function stop_server() {
 
     # The server gets 5 seconds to shutdown normally #
     sleep "5"
-    kill kill -INT -1
+    kill -INT -1
 }
 
 stop_server
