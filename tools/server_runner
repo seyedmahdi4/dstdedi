@@ -67,12 +67,12 @@ fi
 echo "Your server name is : $CLUSTER_NAME"
 
 if [ -z "$MASTER_PORT" ]; then
-CLUSTER_NAME="11000"
+MASTER_PORT="11000"
 fi
 echo "Your master port is : $MASTER_PORT"
 
 if [ -z "$CAVE_PORT" ]; then
-CLUSTER_NAME="11001"
+CAVE_PORT="11001"
 fi
 echo "Your cave port is : $CAVE_PORT"
 
@@ -181,7 +181,7 @@ done
 sed -i '$ s/,$//' $MODOVER
 echo -e "}" >> $MODOVER
 if [ ! "$REFORGED" = true ]; then
-sed '$ s/,$//'  
+sed '$ s/,$//'  $MODOVER_Caves
 echo -e "}" >> $MODOVER_Caves
 fi
 fi
