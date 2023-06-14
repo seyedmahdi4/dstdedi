@@ -3,6 +3,10 @@ PA="/home/dst/.klei/DoNotStarveTogether/world"
 mkdir -p $PA
 gosu root chown -R dst:dst $PA
 
+if [ -d "/home/dst/dontstarvetogether_dedicated_server/ugc_mods/" ]; then
+    gosu root chown -R dst:dst /home/dst/dontstarvetogether_dedicated_server/ugc_mods/
+fi
+
 function fail()
 {
 	echo Error: "$@" >&2
