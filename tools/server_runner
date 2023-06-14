@@ -62,6 +62,16 @@ CLUSTER_NAME="dstdedi -- test"
 fi
 echo "Your server name is : $CLUSTER_NAME"
 
+if [ -z "$MASTER_PORT" ]; then
+CLUSTER_NAME="11000"
+fi
+echo "Your master port is : $MASTER_PORT"
+
+if [ -z "$CAVE_PORT" ]; then
+CLUSTER_NAME="11001"
+fi
+echo "Your cave port is : $CAVE_PORT"
+
 if [ -z "$MAX_PLAYER" ]; then
 MAX_PLAYER=6
 fi
@@ -130,6 +140,10 @@ sed -i "s/pvp = .*$/pvp = ${PVP}/g" $PA/cluster.ini
 sed -i "s/cluster_intention = .*$/cluster_intention = ${STYLE}/g" $PA/cluster.ini
 sed -i "s/pause_when_empty = .*$/pause_when_empty = ${AUTOPAUSE}/g" $PA/cluster.ini
 sed -i "s/game_mode = .*$/game_mode = ${GAMEMODE}/g" $PA/cluster.ini
+
+sed -i "s/server_port = .*$/server_port = ${MASTER_PORT}/g" $PA/Master/server.ini
+sed -i "s/server_port = .*$/server_port = ${CAVE_PORT}/g" $PA/CAVES/server.ini
+
 sed -i "s/steam_group_id = .*$/steam_group_id = ${STEAM_GROUP_ID}/g" $PA/cluster.ini
 sed -i "s/steam_group_only = .*$/steam_group_only = ${STEAM_GROUP_ONLY}/g" $PA/cluster.ini
 sed -i "s/steam_group_admins = .*$/steam_group_admins = ${STEAM_GROUP_ADMINS}/g" $PA/cluster.ini
