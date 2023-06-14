@@ -36,7 +36,11 @@ else
 
 if [ "$REFORGED" = true ]; then
 cp -n -r  /home/dst/.klei/DoNotStarveTogether/example_Reforged/* $PA
+if [ ! -z "$MODS" ]; then
 MODS="${MODS},1938752683"
+else
+MODS="1938752683"
+fi
 if [ "$PUGNAX" = true ]; then
 MODS="${MODS},2038128735" 
 echo "Pugnax ON"
@@ -174,8 +178,10 @@ fi
   echo -e "ServerModSetup(\"${mod}\")"   >> /home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
   echo  "Mod ${mod} is enable"
 done
+sed -i '$ s/,$//' $MODOVER
 echo -e "}" >> $MODOVER
 if [ ! "$REFORGED" = true ]; then
+sed '$ s/,$//'  
 echo -e "}" >> $MODOVER_Caves
 fi
 fi
