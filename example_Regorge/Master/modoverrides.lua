@@ -1,19 +1,12 @@
 return {
-  ["workshop-1918927570"]={
-    configuration_options={
-      [""]=0,
-      Gameplay=0,
-      Vote=0,
+	["workshop-1918927570"] = {
+		configuration_options = {
+			kick = true,
       changablefemusic=true,
-      fixed_gamemode=false,
-      forceendmatch=false,
-      gamemode=true,
-      gamemodesign=false,
-      kick=true,
-      newsoil=false,
-      perks=true,
-      specialevents=false 
-    },
-    enabled=true 
-  } 
+			gamemode = true,
+			perks = true,
+			fixed_gamemode = false,
+		},
+		enabled = true
+	},
 }
