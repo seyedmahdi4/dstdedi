@@ -155,7 +155,10 @@ sed -i "s/pause_when_empty = .*$/pause_when_empty = ${AUTOPAUSE}/g" $PA/cluster.
 sed -i "s/game_mode = .*$/game_mode = ${GAMEMODE}/g" $PA/cluster.ini
 
 sed -i "s/server_port = .*$/server_port = ${MASTER_PORT}/g" $PA/Master/server.ini
-sed -i "s/server_port = .*$/server_port = ${CAVE_PORT}/g" $PA/CAVES/server.ini
+
+if [ ! "$REFORGED" = true ] || [ ! "$CAVE" = false ] || [ ! "$REGORGE" = true ]; then
+  sed -i "s/server_port = .*$/server_port = ${CAVE_PORT}/g" $PA/Caves/server.ini
+fi
 
 sed -i "s/steam_group_id = .*$/steam_group_id = ${STEAM_GROUP_ID}/g" $PA/cluster.ini
 sed -i "s/steam_group_only = .*$/steam_group_only = ${STEAM_GROUP_ONLY}/g" $PA/cluster.ini
@@ -168,9 +171,9 @@ for admin in "${admins[@]}"; do
   echo "Add admins:$admin"
 done
 
-#mod
+#mods
 
-if [ ! -z "$MODS" ]; then
+if [ ! -z "$MODS" ] && [ ! "$REGORGE" = true ]; then
   MODOVER="$PA/Master/modoverrides.lua"
   MODOVER_Caves="$PA/Caves/modoverrides.lua"
   echo -e "return {" >$MODOVER
@@ -196,6 +199,10 @@ if [ ! -z "$MODS" ]; then
   ./dontstarve_dedicated_server_nullrenderer_x64 -cluster world -only_update_server_mods
 fi
 
+if [ "$REGORGE" = true ]; then
+ echo -e "ServerModSetup(\"1916510390\")" >>/home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
+fi
+
 # Run server
 cd /home/dst/dontstarvetogether_dedicated_server/bin64
 
@@ -213,7 +220,7 @@ if [ ! "$DEBUG" = "true" ]; then
       echo "Running server . . ."
       echo "------------"
       echo
-      ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master | grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files' &\
+      ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master | grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files' & \
       ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Caves | grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files'
     fi
   fi
