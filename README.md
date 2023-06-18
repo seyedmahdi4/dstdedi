@@ -8,7 +8,7 @@ A docker image for running DST servers.
 - run container:
 ```
 docker run --name dst -it -d -e "CLUSTER_TOKEN=****" -e "CLUSTER_NAME=test server" -e MAX_PLAYER=10\
--e MODS=1185229307,378160973 -v /path/to/dst-data/:/home/dst/.klei/DoNotStarveTogether/world/ dstdedi
+-e MODS=1185229307,378160973 -v /path/to/dst-data/:/home/dst/.klei/DoNotStarveTogether/world/ seyedmahdi3/dstdedi:latest
 ```
 - stopping container: ```docker stop dst```
 - starting container after stopping: ```docker start dst```
@@ -23,7 +23,7 @@ version "3"
 
 services:
   dst:
-    image: seyedmahdi3/dstdedi:0.2
+    image: seyedmahdi3/dstdedi:latest
     ports:  # binding ports for connecting via c_connect("ip/address", port)
       - 11000:11000
     tty: true
@@ -46,7 +46,7 @@ NOTE: For updating mods, restart the server by running `docker restart dst`.
 fist get IDs from the steam workshop .for example steamcommunity.com/sharedfiles/filedetails/?id=1185229307 this is Epic Healthbar mod and mod's ID is `1185229307`. and use it in MODS env as an example:
 `-e MODS=1185229307,378160973`
 ```
-docker run --name dst -it -d -e "CLUSTER_TOKEN=****" -e MODS=1185229307,378160973 seyedmahdi3/dstdedi:0.2
+docker run --name dst -it -d -e "CLUSTER_TOKEN=****" -e MODS=1185229307,378160973 seyedmahdi3/dstdedi:latest
 ```
 ## Updating The Game
 By setting `CHECK_UPDATE` to `true`, server will check for game updates and automatically download it after each container start/restart. If this option is set to true, simply restart the container by running `docker restart dst` to update the game. If `CHECK_UPDATE` is set to `false`, run `docker rm -f` and then run the container again with `CHECK_UPDATE` set to `true`.
@@ -86,7 +86,7 @@ You can run a ReForged modded world by setting `REFORGED` env variable to `true`
 
 docker run example:
 ```
-docker run --name dst -it -d -e "CLUSTER_TOKEN=****" -e REFORGED=true  seyedmahdi3/dstdedi:0.2
+docker run --name dst -it -d -e "CLUSTER_TOKEN=****" -e REFORGED=true  seyedmahdi3/dstdedi:latest
 ```
 
 docker-compose.yml example:
@@ -95,7 +95,7 @@ version "3"
 
 services:
   dst_forge:
-    image: seyedmahdi3/dstdedi:0.2
+    image: seyedmahdi3/dstdedi:latest
     tty: true
     stdin_open: true
     environment:  # set environment variables here
@@ -107,6 +107,13 @@ services:
       # ...
 ```
 
+## Running ReGorge
+You can run a ReForged modded world by setting `REGORGE` env variable to `true`.
+
+docker run example:
+```
+docker run --name dst -it -d -e "CLUSTER_TOKEN=****" -e REGORGE=true  seyedmahdi3/dstdedi:latest
+```
 
 ## Executing DST Console Commands
 In order to run console commands from dedicated server as host(e.g. making announcements), container must be run with `-it` option, then run `docker attach dst` in shell. Now you can run DST console commands. For dettaching do `ctrl-p` and `ctrl-q`.
