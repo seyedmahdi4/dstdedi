@@ -9,7 +9,7 @@ WORKDIR /home/dst
 COPY --chown=dst:dst install.sh /home/dst/install.sh
 RUN chmod +x /home/dst/install.sh && /home/dst/install.sh
 
-COPY --chown=dst:dst example_world/ example_Reforged/ example_regorge/ /home/dst/.klei/DoNotStarveTogether/example_world/
+COPY --chown=dst:dst example_world/ example_Reforged/ example_Regorge/ /home/dst/.klei/DoNotStarveTogether/example_world/
 COPY --chown=dst:dst tools/* run.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*
 CMD ["run.sh"]
