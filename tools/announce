@@ -1,10 +1,14 @@
 #!/bin/bash
 
+if [ ! "$SCREEN" = "true" ]; then
+    echo Error: "screen mod is diable. for this option most SCREEN=true!" >&2
+    exit 1
+fi
+
 arg=$*
 
 function command_m() {
-    screen -S dst  -p 0 -X stuff "$1^M"
+    screen -S dst -p 0 -X stuff "$1^M"
 }
-
 
 command_m "c_announce(\"""$arg""\")"

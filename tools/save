@@ -1,2 +1,8 @@
 #!/bin/bash
+
+if [ ! "$SCREEN" = "true" ]; then
+    echo Error: "screen mod is diable. for this option most SCREEN=true!" >&2
+    exit 1
+fi
+
 send-console "c_save()"

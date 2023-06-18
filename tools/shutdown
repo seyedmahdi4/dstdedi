@@ -1,10 +1,13 @@
 #!/bin/bash
 
+if [ ! "$SCREEN" = "true" ]; then
+    echo Error: "screen mod is diable. for this option most SCREEN=true!" >&2
+    exit 1
+fi
+
 function command_m() {
-    screen -S dst  -p 0 -X stuff "$1^M"
+    screen -S dst -p 0 -X stuff "$1^M"
 }
-
-
 
 function stop_server() {
     command_m 'c_announce("The server will shut down in the next 10 seconds!")'

@@ -1,145 +1,139 @@
 #!/bin/bash
 PA="/home/dst/.klei/DoNotStarveTogether/world"
 mkdir -p $PA
-gosu root chown -R dst:dst $PA
 
-if [ -d "/home/dst/dontstarvetogether_dedicated_server/ugc_mods/" ]; then
-    gosu root chown -R dst:dst /home/dst/dontstarvetogether_dedicated_server/ugc_mods/
-fi
+gosu root chown -R dst:dst /home/dst/
 
-function fail()
-{
-	echo Error: "$@" >&2
-	exit 1
+function fail() {
+  echo Error: "$@" >&2
+  exit 1
 }
 
-if [  "$TEST__" = true ]; then
+if [ "$TEST__" = true ]; then
   echo note !!!!! testing mode
   docker_test &
 fi
 
-
-if [  "$CHECK_UPDATE" = true ]; then
+if [ "$CHECK_UPDATE" = true ]; then
   /home/dst/steamcmd/steamcmd.sh +force_install_dir "/home/dst/dontstarvetogether_dedicated_server" +login anonymous +app_update 343050 +quit
 fi
 
-
-
+# for download map from url
 if [ ! -z "$SAVE_URL" ]; then
-echo Downloading
-if [ ! "$DEBUG" = "true" ]; then
-wget -O $PA/example.zip -o /dev/null $SAVE_URL || fail "downalod world faild!"
-unzip $PA/example.zip -d $PA 1> /dev/null  || fail "this world file not zip !"
-else
-wget -O $PA/example.zip $SAVE_URL || fail "downalod world faild!"
-unzip $PA/example.zip -d $PA  || fail "this world file not zip !"
-fi
-echo Downloaded world successful
-rm $PA/example.zip
+  echo Downloading
+  if [ ! "$DEBUG" = "true" ]; then
+    wget -O $PA/example.zip -o /dev/null $SAVE_URL || fail "downalod world faild!"
+    unzip $PA/example.zip -d $PA 1>/dev/null || fail "this world file not zip !"
+  else
+    wget -O $PA/example.zip $SAVE_URL || fail "downalod world faild!"
+    unzip $PA/example.zip -d $PA || fail "this world file not zip !"
+  fi
+  echo Downloaded world successful
+  rm $PA/example.zip
 else
 
-if [ "$REFORGED" = true ]; then
-cp -n -r  /home/dst/.klei/DoNotStarveTogether/example_Reforged/* $PA
-if [ ! -z "$MODS" ]; then
-MODS="${MODS},1938752683"
-else
-MODS="1938752683"
-fi
-if [ "$PUGNAX" = true ]; then
-MODS="${MODS},2038128735" 
-echo "Pugnax ON"
-fi
-if [ "$HALLOWED" = true  ]; then
-MODS="${MODS},2633870801" 
-fi
-echo Mods update to $MODS
+  if [ "$REFORGED" = true ]; then
+    cp -n -r /home/dst/.klei/DoNotStarveTogether/example_Reforged/* $PA
+    if [ ! -z "$MODS" ]; then
+      MODS="${MODS},1938752683"
+    else
+      MODS="1938752683"
+    fi
+    if [ "$PUGNAX" = true ]; then
+      MODS="${MODS},2038128735"
+      echo "Pugnax ON"
+    fi
+    if [ "$HALLOWED" = true ]; then
+      MODS="${MODS},2633870801"
+    fi
+    echo Mods update to $MODS
 
-else
-cp -n -r  /home/dst/.klei/DoNotStarveTogether/example_world/* $PA
+  else
+    cp -n -r /home/dst/.klei/DoNotStarveTogether/example_world/* $PA
 
-fi
+  fi
 fi
 
-if [ -z "$CLUSTER_TOKEN" ] || [ "$CLUSTER_TOKEN" = "****"  ] ; then
-echo ERROR 404! CLUSTER_TOKEN not found
-exit 1
+if [ -z "$CLUSTER_TOKEN" ] || [ "$CLUSTER_TOKEN" = "****" ]; then
+  echo ERROR 404! CLUSTER_TOKEN not found
+  exit 1
 fi
 
 if [ -z "$CLUSTER_NAME" ]; then
-CLUSTER_NAME="dstdedi -- test"
+  CLUSTER_NAME="dstdedi -- test"
 fi
 echo "Your server name is : $CLUSTER_NAME"
 
 if [ -z "$MASTER_PORT" ]; then
-MASTER_PORT="11000"
+  MASTER_PORT="11000"
 fi
 echo "Your master port is : $MASTER_PORT"
 
 if [ -z "$CAVE_PORT" ]; then
-CAVE_PORT="11001"
+  CAVE_PORT="11001"
 fi
 echo "Your cave port is : $CAVE_PORT"
 
 if [ -z "$MAX_PLAYER" ]; then
-MAX_PLAYER=6
+  MAX_PLAYER=6
 fi
 echo "Max player set to: $MAX_PLAYER"
 
 if [ -z "$CLUSTER_DESCRIPTION" ]; then
-CLUSTER_DESCRIPTION="Powered by Docker - seyedmahdi3\/dstdedi"
+  CLUSTER_DESCRIPTION="Powered by Docker - seyedmahdi3\/dstdedi"
 fi
 echo -e "Description set to: $CLUSTER_DESCRIPTION"
 
-
-
 if [ -z "$GAMEMODE" ]; then
-GAMEMODE="survival"
+  GAMEMODE="survival"
 fi
 
 if [ "$REFORGED" = true ]; then
-GAMEMODE="lavaarena"
+  GAMEMODE="lavaarena"
 fi
 
 echo "Gamemode set to: $GAMEMODE"
 
 if [ -z "$STYLE" ]; then
-STYLE="cooperative"
+  STYLE="Survival"
 fi
 echo "Playstyle set to: $STYLE"
 
 if [ -z "$PVP" ]; then
-PVP="false"
+  PVP="false"
 fi
 echo "PVP set to: $PVP"
 
 if [ -z "$AUTOPAUSE" ]; then
-AUTOPAUSE="true"
+  AUTOPAUSE="true"
 fi
 echo "Autopause is : $AUTOPAUSE"
+
 if [ ! -z "$CLUSTER_PASSWORD" ]; then
-echo "Password is set to: $CLUSTER_PASSWORD"
+  echo "Password is set to: $CLUSTER_PASSWORD"
 fi
 
 if [ -z "$STEAM_GROUP_ID" ]; then
-STEAM_GROUP_ID=0
-STEAM_GROUP_ONLY=false
-STEAM_GROUP_ADMINS=false
+  STEAM_GROUP_ID=0
+  STEAM_GROUP_ONLY=false
+  STEAM_GROUP_ADMINS=false
 else
-if [ -z "$STEAM_GROUP_ONLY" ]; then
-STEAM_GROUP_ONLY=false
-fi
-if [ -z "$STEAM_GROUP_ADMINS" ]; then
-STEAM_GROUP_ADMINS=false
-fi
-echo "Steam group id is set to : $STEAM_GROUP_ID"
-echo "Steam group only is set to : $STEAM_GROUP_ONLY"
-echo "Steam group admins is set to : $STEAM_GROUP_ADMINS"
+  if [ -z "$STEAM_GROUP_ONLY" ]; then
+    STEAM_GROUP_ONLY=false
+  fi
+  if [ -z "$STEAM_GROUP_ADMINS" ]; then
+    STEAM_GROUP_ADMINS=false
+  fi
+  echo "Steam group id is set to : $STEAM_GROUP_ID"
+  echo "Steam group only is set to : $STEAM_GROUP_ONLY"
+  echo "Steam group admins is set to : $STEAM_GROUP_ADMINS"
 fi
 
 if [ ! -f "$PA/cluster.ini" ]; then
-cp  /home/dst/.klei/DoNotStarveTogether/example_world/cluster.ini $PA/cluster.ini
+  cp /home/dst/.klei/DoNotStarveTogether/example_world/cluster.ini $PA/cluster.ini
 fi
 
+# setup variable
 sed -i "s/cluster_name = .*$/cluster_name = ${CLUSTER_NAME}/g" $PA/cluster.ini || fail "error in permision . make issues"
 sed -i "s/cluster_description = .*$/cluster_description = ${CLUSTER_DESCRIPTION}/g" $PA/cluster.ini
 sed -i "s/max_players = .*$/max_players = ${MAX_PLAYER}/g" $PA/cluster.ini
@@ -155,71 +149,72 @@ sed -i "s/server_port = .*$/server_port = ${CAVE_PORT}/g" $PA/CAVES/server.ini
 sed -i "s/steam_group_id = .*$/steam_group_id = ${STEAM_GROUP_ID}/g" $PA/cluster.ini
 sed -i "s/steam_group_only = .*$/steam_group_only = ${STEAM_GROUP_ONLY}/g" $PA/cluster.ini
 sed -i "s/steam_group_admins = .*$/steam_group_admins = ${STEAM_GROUP_ADMINS}/g" $PA/cluster.ini
-echo $CLUSTER_TOKEN > $PA/cluster_token.txt
+echo $CLUSTER_TOKEN >$PA/cluster_token.txt
 
-IFS=',' read -ra admins <<< "${ADMIN_IDS}"
+IFS=',' read -ra admins <<<"${ADMIN_IDS}"
 for admin in "${admins[@]}"; do
-  echo $admin >> $PA/adminlist.txt
+  echo $admin >>$PA/adminlist.txt
   echo "Add admins:$admin"
 done
-
 
 #mod
 
 if [ ! -z "$MODS" ]; then
-MODOVER="$PA/Master/modoverrides.lua"
-MODOVER_Caves="$PA/Caves/modoverrides.lua"
-echo -e "return {" > $MODOVER
-if [ ! "$REFORGED" = true ]; then
-echo -e "return {" > $MODOVER_Caves
-fi
-IFS=',' read -ra all_mods <<< "${MODS}"
-for mod in "${all_mods[@]}"; do
-  echo -e "[\"workshop-${mod}\"]={enabled=true}," >> $MODOVER
-if [ ! "$REFORGED" = true ]; then
-  echo -e "[\"workshop-${mod}\"]={enabled=true}," >> $MODOVER_Caves
-fi
-  echo -e "ServerModSetup(\"${mod}\")"   >> /home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
-  echo  "Mod ${mod} is enable"
-done
-sed -i '$ s/,$//' $MODOVER
-echo -e "}" >> $MODOVER
-if [ ! "$REFORGED" = true ]; then
-sed '$ s/,$//'  $MODOVER_Caves
-echo -e "}" >> $MODOVER_Caves
-fi
+  MODOVER="$PA/Master/modoverrides.lua"
+  MODOVER_Caves="$PA/Caves/modoverrides.lua"
+  echo -e "return {" >$MODOVER
+  if [ ! "$REFORGED" = true ]; then
+    echo -e "return {" >$MODOVER_Caves
+  fi
+  IFS=',' read -ra all_mods <<<"${MODS}"
+  for mod in "${all_mods[@]}"; do
+    echo -e "[\"workshop-${mod}\"]={enabled=true}," >>$MODOVER
+    if [ ! "$REFORGED" = true ]; then
+      echo -e "[\"workshop-${mod}\"]={enabled=true}," >>$MODOVER_Caves
+    fi
+    echo -e "ServerModSetup(\"${mod}\")" >>/home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
+    echo "Mod ${mod} is enable"
+  done
+  sed -i '$ s/,$//' $MODOVER
+  echo -e "}" >>$MODOVER
+  if [ ! "$REFORGED" = true ]; then
+    sed '$ s/,$//' $MODOVER_Caves
+    echo -e "}" >>$MODOVER_Caves
+  fi
+  echo "installing mods:"
+  ./dontstarve_dedicated_server_nullrenderer_x64 -cluster world -only_update_server_mods
 fi
 
-
-
+# Run server
 cd /home/dst/dontstarvetogether_dedicated_server/bin64
-grep_cmd="grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files'"
+
 if [ ! "$DEBUG" = "true" ]; then
 
-if [ "$REFORGED" = true ]; then
-echo "Running Reforged server . . ."
-echo "------------"
-echo
-./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master |grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files'
+  if [ "$REFORGED" = true ]; then
+    echo "Running Reforged server . . ."
+    echo "------------"
+    echo
+    ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master | grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files'
+  else
+    if [ "$CAVE" = false ]; then
+      ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master| grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files'
+    else
+      echo "Running server . . ."
+      echo "------------"
+      echo
+      ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master | grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files' &\
+      ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Caves | grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files'
+    fi
+  fi
+
 else
-echo "Running server . . ."
-echo "------------"
-echo
-
-./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master |grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files' & \
-./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Caves | grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files'
-fi
-
-else
-
-
-echo "running server . . ."
-echo "------------"
-echo
-if [ "$REFORGED" = true ] || [ "$CAVE" = false ]  ; then
-./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master
-else
-./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Caves  &  \
-./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master
-fi
+  echo "running server . . ."
+  echo "------------"
+  echo
+  if [ "$REFORGED" = true ] || [ "$CAVE" = false ]; then
+    ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master
+  else
+    ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Caves & \
+    ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master
+  fi
 fi
