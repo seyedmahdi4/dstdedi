@@ -49,8 +49,16 @@ else
     echo Mods update to $MODS
 
   else
-    cp -n -r /home/dst/.klei/DoNotStarveTogether/example_world/* $PA
-
+    if [ "$REGORGE" = true ]; then
+      cp -n -r /home/dst/.klei/DoNotStarveTogether/example_Regorge/* $PA
+      if [ ! -z "$MODS" ]; then
+        MODS="${MODS},1918927570"
+      else
+        MODS="1918927570"
+      fi
+    else
+      cp -n -r /home/dst/.klei/DoNotStarveTogether/example_world/* $PA
+    fi
   fi
 fi
 
@@ -90,6 +98,9 @@ fi
 
 if [ "$REFORGED" = true ]; then
   GAMEMODE="lavaarena"
+fi
+if [ "$REGORGE" = true ]; then
+  GAMEMODE="quagmire"
 fi
 
 echo "Gamemode set to: $GAMEMODE"
@@ -163,13 +174,13 @@ if [ ! -z "$MODS" ]; then
   MODOVER="$PA/Master/modoverrides.lua"
   MODOVER_Caves="$PA/Caves/modoverrides.lua"
   echo -e "return {" >$MODOVER
-  if [ ! "$REFORGED" = true ]; then
+  if [ ! "$REFORGED" = true ] || [ ! "$REGORGE" = true ]; then
     echo -e "return {" >$MODOVER_Caves
   fi
   IFS=',' read -ra all_mods <<<"${MODS}"
   for mod in "${all_mods[@]}"; do
     echo -e "[\"workshop-${mod}\"]={enabled=true}," >>$MODOVER
-    if [ ! "$REFORGED" = true ]; then
+    if [ ! "$REFORGED" = true ] || [ ! "$REGORGE" = true ]; then
       echo -e "[\"workshop-${mod}\"]={enabled=true}," >>$MODOVER_Caves
     fi
     echo -e "ServerModSetup(\"${mod}\")" >>/home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
@@ -177,7 +188,7 @@ if [ ! -z "$MODS" ]; then
   done
   sed -i '$ s/,$//' $MODOVER
   echo -e "}" >>$MODOVER
-  if [ ! "$REFORGED" = true ]; then
+  if [ ! "$REFORGED" = true ] || [ ! "$REGORGE" = true ]; then
     sed '$ s/,$//' $MODOVER_Caves
     echo -e "}" >>$MODOVER_Caves
   fi
@@ -190,14 +201,14 @@ cd /home/dst/dontstarvetogether_dedicated_server/bin64
 
 if [ ! "$DEBUG" = "true" ]; then
 
-  if [ "$REFORGED" = true ]; then
-    echo "Running Reforged server . . ."
+  if [ "$REFORGED" = true ] || [ "$REGORGE" = true ]; then
+    echo "Running Reforged or Regorge server . . ."
     echo "------------"
     echo
     ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master | grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files'
   else
     if [ "$CAVE" = false ]; then
-      ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master| grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files'
+      ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master | grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files'
     else
       echo "Running server . . ."
       echo "------------"
@@ -211,7 +222,7 @@ else
   echo "running server . . ."
   echo "------------"
   echo
-  if [ "$REFORGED" = true ] || [ "$CAVE" = false ]; then
+  if [ "$REFORGED" = true ] || [ "$CAVE" = false ] || [ "$REGORGE" = true ]; then
     ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master
   else
     ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Caves & \
