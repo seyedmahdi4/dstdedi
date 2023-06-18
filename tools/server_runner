@@ -202,7 +202,7 @@ if [ ! -z "$MODS" ] && [ ! "$REGORGE" = true ]; then
 fi
 
 if [ "$REGORGE" = true ]; then
-  echo -e "ServerModSetup(\"1916510390\")" >>/home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
+  echo -e "ServerModSetup(\"1918927570\")" >>/home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
   ./dontstarve_dedicated_server_nullrenderer_x64 -cluster world -only_update_server_mods
 fi
 
