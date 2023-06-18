@@ -1,15 +1,24 @@
 version: "3"
-
 services:
-  dst:
-    image: seyedmahdi3/dstdedi:0.2
-    ports: # optional
-      - 11000:11000
-    tty: true
-    stdin_open: true
-    volumes:
-      - ./dst-data:/home/dst/.klei/DoNotStarveTogether/world/
+  dst-forge:
+    image: seyedmahdi3/dstdedi:latest
+    container_name: dst
+    restart: unless-stopped
     environment:
+      CHECK_UPDATE: "true"
+      MASTER_PORT: "11000"
+      CAVE_PORT:  "11001"
+      DEBUG: "true"
       CLUSTER_TOKEN: "****"
-      CLUSTER_NAME: "dstdedi -- test"
+      CLUSTER_NAME: "Powerd by seyedmahdi3/dstdedi Docker"
+      STYLE: "Survival"
+      CLUSTER_DESCRIPTION: "Powerd by seyedmahdi3/dstdedi Docker"
+      MAX_PLAYER: "6"
+    ports:
+      - "11000:11000/udp"
+      - "11001:11001/udp"
+    volumes:
+      - dstforgevolume:/home/dst/
 
+volumes:
+  dstforgevolume:
