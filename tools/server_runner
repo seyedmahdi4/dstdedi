@@ -77,10 +77,12 @@ if [ -z "$MASTER_PORT" ]; then
 fi
 echo "Your master port is : $MASTER_PORT"
 
-if [ -z "$CAVE_PORT" ]; then
-  CAVE_PORT="11001"
+if [ "$REFORGED" = true ] || [ "$CAVE" = false ] || [ "$REGORGE" = true ]; then
+  if [ -z "$CAVE_PORT" ]; then
+    CAVE_PORT="11001"
+  fi
+  echo "Your cave port is : $CAVE_PORT"
 fi
-echo "Your cave port is : $CAVE_PORT"
 
 if [ -z "$MAX_PLAYER" ]; then
   MAX_PLAYER=6
@@ -200,7 +202,7 @@ if [ ! -z "$MODS" ] && [ ! "$REGORGE" = true ]; then
 fi
 
 if [ "$REGORGE" = true ]; then
- echo -e "ServerModSetup(\"1916510390\")" >>/home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
+  echo -e "ServerModSetup(\"1916510390\")" >>/home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
 fi
 
 # Run server
@@ -220,7 +222,7 @@ if [ ! "$DEBUG" = "true" ]; then
       echo "Running server . . ."
       echo "------------"
       echo
-      ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master | grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files' & \
+      ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master | grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files' &
       ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Caves | grep 'Server registered\|is now ready\|Your Server Will Not Start\|No auth token could be found\|Account Failed\|Please visit\|Sim paused\|Client connected\|Client authenticated\|Announcement\|Say\|Sim unpaused\|request\:\|Spawning player at\|Server Autopaused\|ReceiveRemoteExecute\|Available disk space for save files'
     fi
   fi
@@ -232,7 +234,7 @@ else
   if [ "$REFORGED" = true ] || [ "$CAVE" = false ] || [ "$REGORGE" = true ]; then
     ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master
   else
-    ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Caves & \
+    ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Caves &
     ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master
   fi
 fi
