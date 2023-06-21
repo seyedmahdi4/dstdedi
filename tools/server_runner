@@ -1,9 +1,8 @@
 #!/bin/bash
 PA="/home/dst/.klei/DoNotStarveTogether/world"
+gosu root chown -R dst:dst /home/dst/
 mkdir -p $PA
 touch $PA/env_file && $PA/env_file
-gosu root chown -R dst:dst /home/dst/
-
 function fail() {
   echo Error: "$@" >&2
   exit 1
