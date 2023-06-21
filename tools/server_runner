@@ -1,8 +1,7 @@
 #!/bin/bash
-touch /home/dst/env_file && source /home/dst/env_file
 PA="/home/dst/.klei/DoNotStarveTogether/world"
 mkdir -p $PA
-
+touch $PA/env_file && $PA/env_file
 gosu root chown -R dst:dst /home/dst/
 
 function fail() {
