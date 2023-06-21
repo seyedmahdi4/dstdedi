@@ -1,4 +1,5 @@
 #!/bin/bash
+touch /home/dst/env_file && source /home/dst/env_file
 PA="/home/dst/.klei/DoNotStarveTogether/world"
 mkdir -p $PA
 
