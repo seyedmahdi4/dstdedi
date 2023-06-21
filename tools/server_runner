@@ -2,7 +2,7 @@
 PA="/home/dst/.klei/DoNotStarveTogether/world"
 gosu root chown -R dst:dst /home/dst/
 mkdir -p $PA
-touch $PA/env_file && $PA/env_file
+touch $PA/env_file && source $PA/env_file
 function fail() {
   echo Error: "$@" >&2
   exit 1
