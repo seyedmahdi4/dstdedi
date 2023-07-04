@@ -1,5 +1,6 @@
 FROM debian:latest
-RUN apt-get update && \
+RUN dpkg --add-architecture i386 && \
+    apt-get update && \
     apt-get install  --no-install-recommends ca-certificates lib32stdc++6 libcurl3-gnutls:i386 libcurl3-gnutls lib32gcc-s1 lib32gcc1 wget unzip gosu screen -y && \
     rm -rf /var/lib/apt/lists/* && \
     chmod +s /usr/sbin/gosu && \
