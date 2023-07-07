@@ -17,4 +17,4 @@ COPY --chown=dst:dst example_Regorge/ /home/dst/.klei/DoNotStarveTogether/exampl
 COPY --chown=dst:dst tools/* run.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*
 CMD ["run.sh"]
-HEALTHCHECK --start-period=2m --interval=5s --retries=28 CMD grep "Sim" /home/dst/screenlog.0
+HEALTHCHECK --start-period=2m --interval=5s --retries=28 CMD grep "Sim paused" /home/dst/screenlog.0
