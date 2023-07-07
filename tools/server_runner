@@ -4,6 +4,7 @@ function fail() {
   exit 1
 }
 
+echo "" > /home/dst/screenlog.0
 PA="/home/dst/.klei/DoNotStarveTogether/world"
 gosu root chown -R dst:dst /home/dst/
 mkdir -p $PA
