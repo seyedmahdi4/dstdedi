@@ -110,7 +110,7 @@ fi
 echo -e "Description set to: $CLUSTER_DESCRIPTION"
 
 if [ -z "$GAMEMODE" ]; then
-  GAMEMODE="survival"
+  GAMEMODE="endless"
 fi
 
 if [ "$REFORGED" = true ]; then
