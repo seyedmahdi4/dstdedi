@@ -4,7 +4,8 @@ RUN dpkg --add-architecture i386 && \
     apt-get install  --no-install-recommends ca-certificates lib32stdc++6 libcurl3-gnutls:i386 libcurl3-gnutls lib32gcc-s1 wget unzip gosu screen -y && \
     rm -rf /var/lib/apt/lists/* && \
     chmod +s /usr/sbin/gosu && \
-    useradd -rm -d /home/dst -s /bin/bash dst
+    groupadd -g 1001 -o dst  && \
+    useradd -g 1001 -u 1001  -mr -d /home/dst -o -s /bin/bash dst 
 USER dst
 WORKDIR /home/dst
 COPY --chown=dst:dst install.sh /home/dst/install.sh
