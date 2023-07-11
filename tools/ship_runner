@@ -4,6 +4,7 @@ function fail() {
     exit 1
 }
 
+echo "Running Shipwrecked"
 echo "" >/home/dst/screenlog.0
 PA="/home/dst/.klei/DoNotStarveTogether/world"
 gosu root chown -R dst:dst /home/dst/
@@ -98,16 +99,18 @@ done
 
 #mods
 
-if [ ! -z "$MODS" ]; then
-    MODOVER="$PA/Master/modoverrides.lua"
-    MODOVER_Caves="$PA/Caves/modoverrides.lua"
-    MODOVER_Island="$PA/Island/modoverrides.lua"
-    MODOVER_Volcano="$PA/Volcano/modoverrides.lua"
-    cp $PA/modoverrides.lua "$PA/Master/modoverrides.lua"
-    cp $PA/modoverrides.lua "$PA/Caves/modoverrides.lua"
-    cp $PA/modoverrides.lua "$PA/Island/modoverrides.lua"
-    cp $PA/modoverrides.lua "$PA/Volcano/modoverrides.lua"
+MODOVER="$PA/Master/modoverrides.lua"
+MODOVER_Caves="$PA/Caves/modoverrides.lua"
+MODOVER_Island="$PA/Island/modoverrides.lua"
+MODOVER_Volcano="$PA/Volcano/modoverrides.lua"
+cp $PA/modoverrides.lua "$PA/Master/modoverrides.lua"
+cp $PA/modoverrides.lua "$PA/Caves/modoverrides.lua"
+cp $PA/modoverrides.lua "$PA/Island/modoverrides.lua"
+cp $PA/modoverrides.lua "$PA/Volcano/modoverrides.lua"
+echo -e "ServerModSetup(\"1378549454\")" >>/home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
+echo -e "ServerModSetup(\"1467214795\")" >>/home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
 
+if [ ! -z "$MODS" ]; then
     IFS=',' read -ra all_mods <<<"${MODS}"
     echo -e "\n" >>$MODOVER
     echo -e "\n" >>$MODOVER_Caves
