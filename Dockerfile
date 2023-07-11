@@ -14,6 +14,7 @@ RUN chmod +x /home/dst/install.sh && /home/dst/install.sh
 COPY --chown=dst:dst example_world/ /home/dst/.klei/DoNotStarveTogether/example_world/
 COPY --chown=dst:dst example_Reforged/ /home/dst/.klei/DoNotStarveTogether/example_Reforged/
 COPY --chown=dst:dst example_Regorge/ /home/dst/.klei/DoNotStarveTogether/example_Regorge/
+COPY --chown=dst:dst example_shipwrecked/ /home/dst/.klei/DoNotStarveTogether/example_shipwrecked/
 
 COPY --chown=dst:dst tools/* run.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*
