@@ -1,0 +1,152 @@
+#!/bin/bash
+function fail() {
+    echo Error: "$@" >&2
+    exit 1
+}
+
+echo "" >/home/dst/screenlog.0
+PA="/home/dst/.klei/DoNotStarveTogether/world"
+gosu root chown -R dst:dst /home/dst/
+mkdir -p $PA
+
+if [ ! -f "$PA/env_file" ]; then
+    touch "$PA/env_file"
+    echo "export CLUSTER_NAME=\"$CLUSTER_NAME\"" >>"$PA/env_file"
+    echo "export CLUSTER_DESCRIPTION=\"$CLUSTER_DESCRIPTION\"" >>"$PA/env_file"
+    echo "export CLUSTER_PASSWORD=\"$CLUSTER_PASSWORD\"" >>"$PA/env_file"
+    echo "export MAX_PLAYER=\"$MAX_PLAYER\"" >>"$PA/env_file"
+    echo "export GAMEMODE=\"$GAMEMODE\"" >>"$PA/env_file"
+    echo "export PVP=\"$PVP\"" >>"$PA/env_file"
+    echo "export MODS=\"$MODS\"" >>"$PA/env_file"
+    echo "export ADMIN_IDS=\"$ADMIN_IDS\"" >>"$PA/env_file"
+fi
+
+source $PA/env_file
+
+if [ "$CHECK_UPDATE" = true ]; then
+    /home/dst/steamcmd/steamcmd.sh +force_install_dir "/home/dst/dontstarvetogether_dedicated_server" +login anonymous +app_update 343050 +quit
+fi
+
+cp -n -r /home/dst/.klei/DoNotStarveTogether/example_shipwrecked/* $PA
+
+if [ -z "$CLUSTER_TOKEN" ] || [ "$CLUSTER_TOKEN" = "****" ]; then
+    echo ERROR 404! CLUSTER_TOKEN not found
+    exit 1
+fi
+
+if [ -z "$CLUSTER_NAME" ]; then
+    CLUSTER_NAME="dstdedi -- test"
+fi
+echo "Your server name is : $CLUSTER_NAME"
+
+if [ -z "$MAX_PLAYER" ]; then
+    MAX_PLAYER=6
+fi
+echo "Max player set to: $MAX_PLAYER"
+
+if [ -z "$CLUSTER_DESCRIPTION" ]; then
+    CLUSTER_DESCRIPTION="Powered by Docker - seyedmahdi3\/dstdedi"
+fi
+echo -e "Description set to: $CLUSTER_DESCRIPTION"
+
+if [ -z "$GAMEMODE" ]; then
+    GAMEMODE="endless"
+fi
+
+echo "Gamemode set to: $GAMEMODE"
+
+if [ -z "$STYLE" ]; then
+    STYLE="Survival"
+fi
+echo "Playstyle set to: $STYLE"
+
+if [ -z "$PVP" ]; then
+    PVP="false"
+fi
+echo "PVP set to: $PVP"
+
+if [ -z "$AUTOPAUSE" ]; then
+    AUTOPAUSE="true"
+fi
+echo "Autopause is : $AUTOPAUSE"
+
+if [ ! -z "$CLUSTER_PASSWORD" ]; then
+    echo "Password is set to: $CLUSTER_PASSWORD"
+fi
+
+if [ ! -f "$PA/cluster.ini" ]; then
+    cp /home/dst/.klei/DoNotStarveTogether/example_world/cluster.ini $PA/cluster.ini
+fi
+
+# setup variable
+sed -i "s/cluster_name = .*$/cluster_name = ${CLUSTER_NAME}/g" $PA/cluster.ini || fail "error in permision . make issues"
+sed -i "s/cluster_description = .*$/cluster_description = ${CLUSTER_DESCRIPTION}/g" $PA/cluster.ini
+sed -i "s/max_players = .*$/max_players = ${MAX_PLAYER}/g" $PA/cluster.ini
+sed -i "s/cluster_password = .*$/cluster_password = ${CLUSTER_PASSWORD}/g" $PA/cluster.ini
+sed -i "s/pvp = .*$/pvp = ${PVP}/g" $PA/cluster.ini
+sed -i "s/cluster_intention = .*$/cluster_intention = ${STYLE}/g" $PA/cluster.ini
+sed -i "s/pause_when_empty = .*$/pause_when_empty = ${AUTOPAUSE}/g" $PA/cluster.ini
+sed -i "s/game_mode = .*$/game_mode = ${GAMEMODE}/g" $PA/cluster.ini
+
+echo $CLUSTER_TOKEN >$PA/cluster_token.txt
+
+IFS=',' read -ra admins <<<"${ADMIN_IDS}"
+for admin in "${admins[@]}"; do
+    echo $admin >>$PA/adminlist.txt
+    echo "Add admins:$admin"
+done
+
+#mods
+
+if [ ! -z "$MODS" ]; then
+    MODOVER="$PA/Master/modoverrides.lua"
+    MODOVER_Caves="$PA/Caves/modoverrides.lua"
+    MODOVER_Island="$PA/Island/modoverrides.lua"
+    MODOVER_Volcano="$PA/Volcano/modoverrides.lua"
+    cp $PA/modoverrides.lua "$PA/Master/modoverrides.lua"
+    cp $PA/modoverrides.lua "$PA/Caves/modoverrides.lua"
+    cp $PA/modoverrides.lua "$PA/Island/modoverrides.lua"
+    cp $PA/modoverrides.lua "$PA/Volcano/modoverrides.lua"
+
+    IFS=',' read -ra all_mods <<<"${MODS}"
+    echo -e "\n" >>$MODOVER
+    echo -e "\n" >>$MODOVER_Caves
+    echo -e "\n" >>$MODOVER_Island
+    echo -e "\n" >>$MODOVER_Volcano
+    for mod in "${all_mods[@]}"; do
+        echo -e "[\"workshop-${mod}\"]={enabled=true}," >>$MODOVER
+        echo -e "[\"workshop-${mod}\"]={enabled=true}," >>$MODOVER_Caves
+        echo -e "[\"workshop-${mod}\"]={enabled=true}," >>$MODOVER_Island
+        echo -e "[\"workshop-${mod}\"]={enabled=true}," >>$MODOVER_Volcano
+        echo -e "ServerModSetup(\"${mod}\")" >>/home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
+        echo "Mod ${mod} is enable"
+    done
+fi
+
+sed -i '$ s/,$//' $MODOVER
+echo -e "}" >>$MODOVER
+sed -i '$ s/,$//' $MODOVER_Caves
+echo -e "}" >>$MODOVER_Caves
+sed -i '$ s/,$//' $MODOVER_Island
+echo -e "}" >>$MODOVER_Island
+sed -i '$ s/,$//' $MODOVER_Volcano
+echo -e "}" >>$MODOVER_Volcano
+
+#install mod
+echo "installing mods:"
+cd /home/dst/dontstarvetogether_dedicated_server/bin64
+./dontstarve_dedicated_server_nullrenderer_x64 -cluster world -only_update_server_mods
+
+# Run server
+
+#if [ ! "$DEBUG" = "true" ]; then
+./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master &
+./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Caves &
+./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Island &
+./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Volcano
+#else
+#    ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Master &
+#    ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Caves &
+#    ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Island &
+#    ./dontstarve_dedicated_server_nullrenderer_x64 -console -cluster world -monitor_parent_process $$ -shard Volcano
+#fi

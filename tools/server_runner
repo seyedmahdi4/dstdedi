@@ -4,25 +4,24 @@ function fail() {
   exit 1
 }
 
-echo "" > /home/dst/screenlog.0
+echo "" >/home/dst/screenlog.0
 PA="/home/dst/.klei/DoNotStarveTogether/world"
 gosu root chown -R dst:dst /home/dst/
 mkdir -p $PA
 
 if [ ! -f "$PA/env_file" ]; then
   touch "$PA/env_file"
-  echo "export CLUSTER_NAME=\"$CLUSTER_NAME\"" >> "$PA/env_file"
-  echo "export CLUSTER_DESCRIPTION=\"$CLUSTER_DESCRIPTION\"" >> "$PA/env_file"
-  echo "export CLUSTER_PASSWORD=\"$CLUSTER_PASSWORD\"" >> "$PA/env_file"
-  echo "export MAX_PLAYER=\"$MAX_PLAYER\"" >> "$PA/env_file"
-  echo "export GAMEMODE=\"$GAMEMODE\"" >> "$PA/env_file"
-  echo "export PVP=\"$PVP\"" >> "$PA/env_file"
-  echo "export MODS=\"$MODS\"" >> "$PA/env_file"
-  echo "export ADMIN_IDS=\"$ADMIN_IDS\"" >> "$PA/env_file"
+  echo "export CLUSTER_NAME=\"$CLUSTER_NAME\"" >>"$PA/env_file"
+  echo "export CLUSTER_DESCRIPTION=\"$CLUSTER_DESCRIPTION\"" >>"$PA/env_file"
+  echo "export CLUSTER_PASSWORD=\"$CLUSTER_PASSWORD\"" >>"$PA/env_file"
+  echo "export MAX_PLAYER=\"$MAX_PLAYER\"" >>"$PA/env_file"
+  echo "export GAMEMODE=\"$GAMEMODE\"" >>"$PA/env_file"
+  echo "export PVP=\"$PVP\"" >>"$PA/env_file"
+  echo "export MODS=\"$MODS\"" >>"$PA/env_file"
+  echo "export ADMIN_IDS=\"$ADMIN_IDS\"" >>"$PA/env_file"
 fi
 
 source $PA/env_file
-
 
 if [ "$TEST__" = true ]; then
   echo note !!!!! testing mode
@@ -190,7 +189,7 @@ done
 
 #mods
 
-if [ ! -z "$MODS" ] && [ ! "$REGORGE" = true ]; then
+if [ ! -z "$MODS" ] && [ ! "$REGORGE" = true ] && [! "$DONTOVERWRITEMODSETTING" = true]; then
   MODOVER="$PA/Master/modoverrides.lua"
   MODOVER_Caves="$PA/Caves/modoverrides.lua"
   echo -e "return {" >$MODOVER
@@ -213,6 +212,7 @@ if [ ! -z "$MODS" ] && [ ! "$REGORGE" = true ]; then
     echo -e "}" >>$MODOVER_Caves
   fi
   echo "installing mods:"
+  cd /home/dst/dontstarvetogether_dedicated_server/bin64
   ./dontstarve_dedicated_server_nullrenderer_x64 -cluster world -only_update_server_mods
 fi
 
