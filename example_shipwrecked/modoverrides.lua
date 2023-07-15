@@ -25,7 +25,7 @@ return {
       devmode=false,
       droplootground=true,
       dynamicmusic=true,
-      fixnoplayerboats=false,
+      fixnoplayerboats=true,
       krakenbuff=true,
       leif_jungle=true,
       limestonerepair=true,
