@@ -18,5 +18,6 @@ COPY --chown=dst:dst example_shipwrecked/ /home/dst/.klei/DoNotStarveTogether/ex
 
 COPY --chown=dst:dst tools/* run.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*
+ENV GOSU_PLEASE_LET_ME_BE_COMPLETELY_INSECURE_I_GET_TO_KEEP_ALL_THE_PIECES="I've seen things you people wouldn't believe. Attack ships on fire off the shoulder of Orion. I watched C-beams glitter in the dark near the Tannhäuser Gate. All those moments will be lost in time, like tears in rain. Time to die."
 CMD ["run.sh"]
 HEALTHCHECK --start-period=2m --interval=5s --retries=28 CMD grep "Sim paused" /home/dst/screenlog.0
