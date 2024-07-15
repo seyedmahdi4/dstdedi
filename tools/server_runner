@@ -189,7 +189,7 @@ done
 
 #mods
 
-if [ ! -z "$MODS" ] && [ ! "$REGORGE" = true ] && [! "$DONTOVERWRITEMODSETTING" = true]; then
+if [ ! -z "$MODS" ] && [ ! "$REGORGE" = true ] && [ ! "$DONTOVERWRITEMODSETTING" = true ]; then
   MODOVER="$PA/Master/modoverrides.lua"
   MODOVER_Caves="$PA/Caves/modoverrides.lua"
   echo -e "return {" >$MODOVER
