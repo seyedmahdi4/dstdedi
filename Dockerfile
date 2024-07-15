@@ -1,7 +1,7 @@
 FROM debian:latest
 RUN dpkg --add-architecture i386 && \
     apt-get update && \
-    apt-get install  --no-install-recommends ca-certificates lib32stdc++6 libcurl3-gnutls:i386 libcurl3-gnutls lib32gcc-s1 wget unzip gosu screen -y && \
+    apt-get install  --no-install-recommends nano net-tools netcat-traditional ca-certificates lib32stdc++6 libcurl3-gnutls:i386 libcurl3-gnutls lib32gcc-s1 wget unzip gosu screen -y && \
     rm -rf /var/lib/apt/lists/* && \
     chmod +s /usr/sbin/gosu && \
     groupadd -g 1001 -o dst  && \
