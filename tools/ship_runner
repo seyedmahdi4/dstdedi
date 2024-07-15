@@ -110,7 +110,7 @@ cp $PA/modoverrides.lua "$PA/Volcano/modoverrides.lua"
 echo -e "ServerModSetup(\"1378549454\")" >>/home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
 echo -e "ServerModSetup(\"1467214795\")" >>/home/dst/dontstarvetogether_dedicated_server/mods/dedicated_server_mods_setup.lua
 
-if [ ! -z "$MODS" ]; then
+if [ ! -z "$MODS" ] && [ ! "$DONTOVERWRITEMODSETTING" = true ]; then
     IFS=',' read -ra all_mods <<<"${MODS}"
     echo -e "\n" >>$MODOVER
     echo -e "\n" >>$MODOVER_Caves
